@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfqrlk4bb43t"]
+
+[ext_resource type="Script" path="res://Player.gd" id="1_ktidv"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xuo0n"]
+radius = 16.0
+height = 34.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rerq0"]
+size = Vector2(13, 3)
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(4, -3)
+input_pickable = true
+script = ExtResource("1_ktidv")
+
+[node name="HurtBox" type="CollisionShape2D" parent="."]
+position = Vector2(0, 8)
+shape = SubResource("CapsuleShape2D_xuo0n")
+debug_color = Color(0.683532, 0.364928, 0.87267, 0.42)
+
+[node name="HitBox" type="CollisionShape2D" parent="."]
+position = Vector2(10, -13)
+shape = SubResource("RectangleShape2D_rerq0")
+debug_color = Color(0.709804, 0.482353, 0.184314, 0.784314)
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]

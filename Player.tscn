@@ -2,26 +2,26 @@
 
 [ext_resource type="Script" path="res://Player.gd" id="1_ktidv"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xuo0n"]
-radius = 16.0
-height = 34.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dpr4g"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rerq0"]
-size = Vector2(13, 3)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jpmsl"]
+size = Vector2(73, 4)
 
 [node name="Player" type="CharacterBody2D"]
 position = Vector2(4, -3)
 input_pickable = true
 script = ExtResource("1_ktidv")
 
-[node name="HurtBox" type="CollisionShape2D" parent="."]
-position = Vector2(0, 8)
-shape = SubResource("CapsuleShape2D_xuo0n")
-debug_color = Color(0.683532, 0.364928, 0.87267, 0.42)
+[node name="Hurtbox" type="CollisionShape2D" parent="."]
+show_behind_parent = true
+shape = SubResource("CapsuleShape2D_dpr4g")
 
-[node name="HitBox" type="CollisionShape2D" parent="."]
-position = Vector2(10, -13)
-shape = SubResource("RectangleShape2D_rerq0")
-debug_color = Color(0.709804, 0.482353, 0.184314, 0.784314)
+[node name="Weapon" type="Area2D" parent="."]
+
+[node name="Hitbox" type="CollisionShape2D" parent="Weapon" groups=["weapon"]]
+show_behind_parent = true
+position = Vector2(36, -6)
+shape = SubResource("RectangleShape2D_jpmsl")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="area_entered" from="Weapon" to="." method="_on_weapon_area_entered"]

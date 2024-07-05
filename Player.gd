@@ -16,6 +16,7 @@ var jump_action = ""
 
 var hitbox_original_position = Vector2()
 var hitbox_flipped_position = Vector2()
+var player_nr = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,13 +25,14 @@ func _ready():
 	set_process_input(true) # Ensure the node receives input events.
 	
 	# Store the original and flipped positions of the hitbox
-	hitbox_original_position = $HitBox.position
-	hitbox_flipped_position = Vector2(-$HitBox.position.x, $HitBox.position.y)
+	hitbox_original_position = $Weapon/Hitbox.position
+	hitbox_flipped_position = Vector2(-$Weapon/Hitbox.position.x, $Weapon/Hitbox.position.y)
 
 func start(pos, player_number):
 	position = pos
 	show()
-	$HurtBox.disabled = false
+	$Hurtbox.disabled = false
+	player_nr = player_number
 
 	# Assign input actions based on player number
 	if player_number == 1:
@@ -51,9 +53,9 @@ func _input(event):
 func flip_direction(flip):
 	$AnimatedSprite2D.flip_h = flip
 	if flip:
-		$HitBox.position = hitbox_flipped_position
+		$Weapon/Hitbox.position = hitbox_flipped_position
 	else:
-		$HitBox.position = hitbox_original_position
+		$Weapon/Hitbox.position = hitbox_original_position
 
 func _physics_process(delta): 
 	velocity.y += gravity * delta
@@ -85,13 +87,27 @@ func _physics_process(delta):
 		$AnimatedSprite2D.animation = "up"
 
 	move_and_slide()
-	position = position.clamp(Vector2.ZERO, screen_size)
 
 	# Debug: Check hitbox and hurtbox positions
-	print_debug_info()
+	
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		#print("Player ", player_nr,  " collided with ", collision.get_collider().name)
 
-func print_debug_info():
-	print("Position: ", position)
-	print("Velocity: ", velocity)
-	print("HurtBox Position: ", $HurtBox.global_position)
-	print("HitBox Position: ", $HitBox.global_position)
+	screen_wrap()
+
+func screen_wrap():
+	if position.x > screen_size.x:
+		position.x = 0
+	if position.x < 0:
+		position.x = screen_size.x
+	if position.y > screen_size.y:
+		position.y = 0
+	if position.y < 0:
+		position.y = screen_size.y
+	
+	##position.x = wrapf(position.x, 0, screen_size.x)
+	##position.y = wrapf(position.y, 0, screen_size.y)
+
+func _on_weapon_area_entered(area):
+	print("Player ", player_nr,  " weapon area ", area)

@@ -44,5 +44,6 @@ func player2_hit_player1():
 	on_player_hit(2)
 
 func on_player_hit(player_hitting):
+	$DeathSound.play()
 	$HUD.update_score(p1_score, p2_score)
 	new_game()

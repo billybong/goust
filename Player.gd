@@ -16,6 +16,7 @@ var jump_action = ""
 
 var hitbox_original_position = Vector2()
 var hitbox_flipped_position = Vector2()
+var flip = false
 var player_nr = 0
 
 # Called when the node enters the scene tree for the first time.
@@ -40,7 +41,8 @@ func start(pos, player_number):
 		move_left_action = "player1_move_left"
 		jump_action = "player1_jump"
 	elif player_number == 2:
-		flip_direction(true)
+		flip = true
+		flip_direction()
 		move_right_action = "player2_move_right"
 		move_left_action = "player2_move_left"
 		jump_action = "player2_jump"
@@ -50,7 +52,7 @@ func _input(event):
 	if event.is_action_pressed(jump_action) && time_to_next_jump <= 0:
 		jump_next = true
 
-func flip_direction(flip):
+func flip_direction():
 	$AnimatedSprite2D.flip_h = flip
 	if flip:
 		$Weapon/Hitbox.position = hitbox_flipped_position
@@ -74,7 +76,14 @@ func _physics_process(delta):
 	elif Input.is_action_pressed(move_left_action):
 		velocity.x = -speed
 
-	flip_direction(velocity.x < 0)
+	if (velocity.x < 0):
+		flip = true
+	elif (velocity.x == 0):
+		flip = flip
+	else:
+		flip = false
+
+	flip_direction()
 
 	if velocity.length() > 0:
 		$AnimatedSprite2D.play()
@@ -97,17 +106,8 @@ func _physics_process(delta):
 	screen_wrap()
 
 func screen_wrap():
-	if position.x > screen_size.x:
-		position.x = 0
-	if position.x < 0:
-		position.x = screen_size.x
-	if position.y > screen_size.y:
-		position.y = 0
-	if position.y < 0:
-		position.y = screen_size.y
-	
-	##position.x = wrapf(position.x, 0, screen_size.x)
-	##position.y = wrapf(position.y, 0, screen_size.y)
+	position.x = wrapf(position.x, 0, screen_size.x)
+	position.y = wrapf(position.y, 0, screen_size.y)
 
 func _on_weapon_area_entered(area):
 	print("Player ", player_nr,  " weapon area ", area)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://bfqrlk4bb43t"]
+[gd_scene load_steps=5 format=3 uid="uid://bfqrlk4bb43t"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_ktidv"]
+[ext_resource type="AudioStream" uid="uid://dgxtdsolmkip5" path="res://art/gameover.wav" id="2_chbui"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dpr4g"]
 
@@ -22,6 +23,12 @@ shape = SubResource("CapsuleShape2D_dpr4g")
 show_behind_parent = true
 position = Vector2(36, -6)
 shape = SubResource("RectangleShape2D_jpmsl")
+
+[node name="StunTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("2_chbui")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
 [connection signal="body_entered" from="Weapon" to="." method="_on_weapon_area_entered"]

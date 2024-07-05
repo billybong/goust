@@ -19,6 +19,16 @@ var hitbox_flipped_position = Vector2()
 var flip = false
 var player_nr = 0
 
+# TODO
+#
+# 1. Fix the random pixel noise in one of the sprites
+# 2. Adjust Hitbox/Hurtbox size and position and hide them
+# 3. Make it less likely both players get a point on a hit
+# 4. Better hit sound effect
+# 5. Powerup: shooting from your lance
+
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	hide()
@@ -59,7 +69,10 @@ func flip_direction():
 	else:
 		$Weapon/Hitbox.position = hitbox_original_position
 
-func _physics_process(delta): 
+func _physics_process(delta):
+	if($StunTimer.time_left > 0):
+		return
+
 	velocity.y += gravity * delta
 	time_to_next_jump -= delta
 
@@ -111,5 +124,9 @@ func screen_wrap():
 
 func _on_weapon_area_entered(area):
 	if ((area.name == "Player2" && player_nr == 1) || (area.name == "Player1" && player_nr == 2)):
+		$DeathSound.play()
+		$StunTimer.start()
+		await $StunTimer.timeout
+		$StunTimer.stop()
 		hit.emit()
 		print("Player ", player_nr,  " weapon area ", area.name)

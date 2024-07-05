@@ -110,4 +110,6 @@ func screen_wrap():
 	position.y = wrapf(position.y, 0, screen_size.y)
 
 func _on_weapon_area_entered(area):
-	print("Player ", player_nr,  " weapon area ", area)
+	if ((area.name == "Player2" && player_nr == 1) || (area.name == "Player1" && player_nr == 2)):
+		hit.emit()
+		print("Player ", player_nr,  " weapon area ", area.name)

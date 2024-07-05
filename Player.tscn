@@ -24,4 +24,4 @@ position = Vector2(36, -6)
 shape = SubResource("RectangleShape2D_jpmsl")
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="area_entered" from="Weapon" to="." method="_on_weapon_area_entered"]
+[connection signal="body_entered" from="Weapon" to="." method="_on_weapon_area_entered"]

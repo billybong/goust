@@ -11,7 +11,7 @@ func show_game_over():
 	show_message("Game over")
 	await $MessageTimer.timeout
 
-	$Message.text = "Dodge the creeps!"
+	$Message.text = "Joust!"
 	$Message.show()
 
 	await get_tree().create_timer(1.0).timeout
@@ -26,8 +26,9 @@ func _ready():
 func _process(_delta):
 	pass
 
-func update_score(score: int):
-	$ScoreLabel.text = str(score)
+func update_score(p1_score: int, p2_score: int):
+	$P1ScoreLabel.text = str(p1_score)
+	$P2ScoreLabel.text = str(p2_score)
 
 func _on_start_button_pressed():
 	$StartButton.hide()
